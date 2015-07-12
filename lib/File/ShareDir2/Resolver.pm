@@ -40,9 +40,7 @@ sub module_file {
   return unless defined $moduledir;
   require File::Spec;
   my $path = File::Spec->catfile( $moduledir, $filename );
-  	unless ( -e $path ) {
-		Carp::croak("File '$filename' does not exist in module dir");
-	}
+  return unless -e $path;
 	unless ( -r $path ) {
 		Carp::croak("File '$filename' cannot be read, no read permissions");
 	}
