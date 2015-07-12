@@ -28,6 +28,8 @@ header = | use lib 'inc/File-ShareDir-Install';
 [Munge::Whitespace]
 filename = LICENSE
 
+[RemovePrereqs]
+remove = File::ShareDir::Install
 ;authordep Pod::Weaver::Section::Contributors = 0
 
 ;[Prereqs / TestRecommends]

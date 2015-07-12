@@ -17,7 +17,6 @@
       "configure" : {
          "requires" : {
             "ExtUtils::MakeMaker" : "0",
-            "File::ShareDir::Install" : "0.03",
             "perl" : "5.008"
          }
       },
@@ -63,6 +62,7 @@
             "Dist::Zilla::Plugin::Prereqs::Upgrade" : "0",
             "Dist::Zilla::Plugin::Readme::Brief" : "0",
             "Dist::Zilla::Plugin::ReadmeAnyFromPod" : "0",
+            "Dist::Zilla::Plugin::RemovePrereqs" : "0",
             "Dist::Zilla::Plugin::RemovePrereqs::Provided" : "0",
             "Dist::Zilla::Plugin::RewriteVersion::Sanitized" : "0",
             "Dist::Zilla::Plugin::RunExtraTests" : "0",
@@ -754,6 +754,18 @@
             },
             "name" : "Munge::Whitespace",
             "version" : "0.001000"
+         },
+         {
+            "class" : "Dist::Zilla::Plugin::RemovePrereqs",
+            "config" : {
+               "Dist::Zilla::Plugin::RemovePrereqs" : {
+                  "modules_to_remove" : [
+                     "File::ShareDir::Install"
+                  ]
+               }
+            },
+            "name" : "RemovePrereqs",
+            "version" : "5.037"
          },
          {
             "class" : "Dist::Zilla::Plugin::FinderCode",

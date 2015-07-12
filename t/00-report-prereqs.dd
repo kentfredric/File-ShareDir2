@@ -2,7 +2,6 @@ do { my $x = {
        'configure' => {
                         'requires' => {
                                         'ExtUtils::MakeMaker' => '0',
-                                        'File::ShareDir::Install' => '0.03',
                                         'perl' => '5.008'
                                       }
                       },
@@ -48,6 +47,7 @@ do { my $x = {
                                       'Dist::Zilla::Plugin::Prereqs::Upgrade' => '0',
                                       'Dist::Zilla::Plugin::Readme::Brief' => '0',
                                       'Dist::Zilla::Plugin::ReadmeAnyFromPod' => '0',
+                                      'Dist::Zilla::Plugin::RemovePrereqs' => '0',
                                       'Dist::Zilla::Plugin::RemovePrereqs::Provided' => '0',
                                       'Dist::Zilla::Plugin::RewriteVersion::Sanitized' => '0',
                                       'Dist::Zilla::Plugin::RunExtraTests' => '0',

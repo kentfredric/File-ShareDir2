@@ -17,8 +17,7 @@ my %WriteMakefileArgs = (
   "ABSTRACT" => "Locate per-dist and per-module shared files",
   "AUTHOR" => "Adam Kennedy <adamk\@cpan.org>",
   "CONFIGURE_REQUIRES" => {
-    "ExtUtils::MakeMaker" => 0,
-    "File::ShareDir::Install" => "0.03"
+    "ExtUtils::MakeMaker" => 0
   },
   "DISTNAME" => "File-ShareDir2",
   "LICENSE" => "perl",
@@ -50,7 +49,6 @@ my %FallbackPrereqs = (
   "Class::Inspector" => 0,
   "Exporter" => 0,
   "ExtUtils::MakeMaker" => 0,
-  "File::ShareDir::Install" => "0.03",
   "File::Spec" => 0,
   "Test::More" => "0.89",
   "constant" => 0,
