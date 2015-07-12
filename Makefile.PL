@@ -12,6 +12,7 @@ use ExtUtils::MakeMaker;
 
 use File::ShareDir::Install;
 install_share dist => "share";
+install_share module => "File::ShareDir", "foo";
 
 my %WriteMakefileArgs = (
   "ABSTRACT" => "Locate per-dist and per-module shared files",

@@ -24,6 +24,9 @@ default_jobs = 10
 delimiter = |
 header = | use lib 'inc/File-ShareDir-Install';
 
+[ModuleShareDirs]
+File::ShareDir = foo
+
 [ShareDir]
 
 [Munge::Whitespace]
