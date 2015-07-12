@@ -1,11 +1,7 @@
 package File::ShareDir2;
 
-#pod =pod
-#pod
-#pod =head1 NAME
-#pod
-#pod File::ShareDir2 - Locate per-dist and per-module shared files
-#pod
+# ABSTRACT: Locate per-dist and per-module shared files
+
 #pod =head1 SYNOPSIS
 #pod
 #pod   use File::ShareDir2 ':ALL';
@@ -553,7 +549,7 @@ __END__
 
 =head1 NAME
 
-File::ShareDir2
+File::ShareDir2 - Locate per-dist and per-module shared files
 
 =head1 VERSION
 
@@ -630,10 +626,6 @@ the installation.
 
 For the installation half of the solution, see L<Module::Install>
 and its C<install_share> directive.
-
-=head1 NAME
-
-File::ShareDir2 - Locate per-dist and per-module shared files
 
 =head1 FUNCTIONS
 
@@ -747,25 +739,11 @@ This allows you to, in effect, "subclass" shared files.
 Returns the file path as a string, or dies if the file or the dist's
 directory cannot be located, or the file is not readable.
 
-=head1 AUTHOR
-
-Adam Kennedy E<lt>adamk@cpan.orgE<gt>
-
 =head1 SEE ALSO
 
 L<File::ShareDir::Install>, L<File::HomeDir>,
 L<Module::Install>, L<Module::Install::Share>,
 L<File::ShareDir::PAR>, L<Dist::Zilla::Plugin::ShareDir>
-
-=head1 COPYRIGHT
-
-Copyright 2005 - 2011 Adam Kennedy.
-
-This program is free software; you can redistribute
-it and/or modify it under the same terms as Perl itself.
-
-The full text of the license can be found in the
-LICENSE file included with this module.
 
 =head1 AUTHOR
 
