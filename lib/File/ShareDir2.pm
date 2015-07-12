@@ -123,6 +123,8 @@ our @EXPORT_OK = qw{
 };
 our %EXPORT_TAGS = ( ALL => [@EXPORT_OK], );
 
+our $AUTHORITY = 'cpan:KENTNL'; # AUTHORITY
+
 use constant IS_MACOS => !! ($^O eq 'MacOS');
 
 
