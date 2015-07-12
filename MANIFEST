@@ -12,6 +12,7 @@ dist.ini.meta
 foo/test_file.txt
 inc/File-ShareDir-Install/File/ShareDir/Install.pm
 lib/File/ShareDir2.pm
+maint/perlcritic.rc.gen.pl
 share/sample.txt
 share/subdir/sample.txt
 t/00-compile/lib_File_ShareDir2_pm.t
