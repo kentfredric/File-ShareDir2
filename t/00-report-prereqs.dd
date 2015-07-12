@@ -87,7 +87,6 @@ do { my $x = {
                                       'constant' => '0',
                                       'perl' => '5.006',
                                       'strict' => '0',
-                                      'vars' => '0',
                                       'warnings' => '0'
                                     }
                     },
@@ -101,7 +100,8 @@ do { my $x = {
                                    'ExtUtils::MakeMaker' => '0',
                                    'File::Spec' => '0',
                                    'Test::More' => '0.89',
-                                   'perl' => '5.006'
+                                   'perl' => '5.006',
+                                   'vars' => '0'
                                  }
                  }
      };

@@ -7,6 +7,7 @@ build_requires:
   File::Spec: '0'
   Test::More: '0.89'
   perl: '5.006'
+  vars: '0'
 configure_requires:
   ExtUtils::MakeMaker: '0'
   perl: '5.008'
@@ -20,7 +21,7 @@ name: File-ShareDir2
 provides:
   File::ShareDir2:
     file: lib/File/ShareDir2.pm
-    version: '0.000000'
+    version: '0.001000'
 requires:
   Carp: '0'
   Class::Inspector: '0'
@@ -29,10 +30,9 @@ requires:
   constant: '0'
   perl: '5.006'
   strict: '0'
-  vars: '0'
   warnings: '0'
 resources:
   bugtracker: https://github.com/kentfredric/File-ShareDir2/issues
   homepage: https://github.com/kentfredric/File-ShareDir2
   repository: https://github.com/kentfredric/File-ShareDir2.git
-version: '0.000000'
+version: '0.001000'

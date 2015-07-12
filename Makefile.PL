@@ -31,15 +31,15 @@ my %WriteMakefileArgs = (
     "File::Spec" => 0,
     "constant" => 0,
     "strict" => 0,
-    "vars" => 0,
     "warnings" => 0
   },
   "TEST_REQUIRES" => {
     "ExtUtils::MakeMaker" => 0,
     "File::Spec" => 0,
-    "Test::More" => "0.89"
+    "Test::More" => "0.89",
+    "vars" => 0
   },
-  "VERSION" => "0.000000",
+  "VERSION" => "0.001000",
   "test" => {
     "TESTS" => "t/*.t t/00-compile/*.t"
   }
