@@ -781,6 +781,54 @@ Kent Fredric <kentnl@cpan.org>
 
 =back
 
+=head1 CONTRIBUTORS
+
+=for stopwords adam adamk@cpan.org adam@phase-n.com Graham Knop hdp@cpan.org ishigaki@cpan.org Jens Rehsack miyagawa@cpan.org rjbs@cpan.org smueller@cpan.org
+
+=over 4
+
+=item *
+
+adam <adam@88f4d9cd-8a04-0410-9d60-8f63309c3137>
+
+=item *
+
+adamk@cpan.org <adamk@cpan.org@88f4d9cd-8a04-0410-9d60-8f63309c3137>
+
+=item *
+
+adam@phase-n.com <adam@phase-n.com@88f4d9cd-8a04-0410-9d60-8f63309c3137>
+
+=item *
+
+Graham Knop <haarg@haarg.org>
+
+=item *
+
+hdp@cpan.org <hdp@cpan.org@88f4d9cd-8a04-0410-9d60-8f63309c3137>
+
+=item *
+
+ishigaki@cpan.org <ishigaki@cpan.org@88f4d9cd-8a04-0410-9d60-8f63309c3137>
+
+=item *
+
+Jens Rehsack <sno@netbsd.org>
+
+=item *
+
+miyagawa@cpan.org <miyagawa@cpan.org@88f4d9cd-8a04-0410-9d60-8f63309c3137>
+
+=item *
+
+rjbs@cpan.org <rjbs@cpan.org@88f4d9cd-8a04-0410-9d60-8f63309c3137>
+
+=item *
+
+smueller@cpan.org <smueller@cpan.org@88f4d9cd-8a04-0410-9d60-8f63309c3137>
+
+=back
+
 =head1 COPYRIGHT AND LICENSE
 
 This software is copyright (c) 2015 by Adam Kennedy.
