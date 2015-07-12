@@ -12,7 +12,7 @@ use lib 'inc/File-ShareDir-Install';
 
 use File::ShareDir::Install;
 install_share dist => "share";
-install_share module => "File::ShareDir", "foo";
+install_share module => "File::ShareDir2", "foo";
 
 my %WriteMakefileArgs = (
   "ABSTRACT" => "Locate per-dist and per-module shared files",
