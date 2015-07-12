@@ -1,5 +1,6 @@
 package File::ShareDir2;
 
+# vim: noet ts=2 sw=2
 # ABSTRACT: Locate per-dist and per-module shared files
 
 =head1 SYNOPSIS
@@ -124,11 +125,9 @@ our %EXPORT_TAGS = ( ALL => [@EXPORT_OK], );
 
 # AUTHORITY
 
-use constant IS_MACOS => !! ($^O eq 'MacOS');
-
-
-
-
+require File::ShareDir2::Resolver::Perl;
+require File::ShareDir2::Resolver::Perl::Legacy;
+our @RESOLVERS = ( File::ShareDir2::Resolver::Perl->new(), File::ShareDir2::Resolver::Perl::Legacy->new(), );
 
 #####################################################################
 # Interface Functions
@@ -151,62 +150,15 @@ located or is not readable.
 
 sub dist_dir {
 	my $dist = _DIST(shift);
-	my $dir;
-
-	# Try the new version
-	$dir = _dist_dir_new( $dist );
-	return $dir if defined $dir;
-
-	# Fall back to the legacy version
-	$dir = _dist_dir_old( $dist );
-	return $dir if defined $dir;
+	for my $resolver (@RESOLVERS) {
+		my $result = $resolver->dist_dir($dist);
+		if ( defined $result ) {
+				return $result;
+		}
+	}
 
 	# Ran out of options
 	Carp::croak("Failed to find share dir for dist '$dist'");
-}
-
-sub _dist_dir_new {
-	my $dist = shift;
-
-	# Create the subpath
-	my $path = File::Spec->catdir(
-		'auto', 'share', 'dist', $dist,
-	);
-
-	# Find the full dir withing @INC
-	foreach my $inc ( @INC ) {
-		next unless defined $inc and ! ref $inc;
-		my $dir = File::Spec->catdir( $inc, $path );
-		next unless -d $dir;
-		unless ( -r $dir ) {
-			Carp::croak("Found directory '$dir', but no read permissions");
-		}
-		return $dir;
-	}
-
-	return undef;
-}
-
-sub _dist_dir_old {
-	my $dist = shift;
-
-	# Create the subpath
-	my $path = File::Spec->catdir(
-		'auto', split( /-/, $dist ),
-	);
-
-	# Find the full dir within @INC
-	foreach my $inc ( @INC ) {
-		next unless defined $inc and ! ref $inc;
-		my $dir = File::Spec->catdir( $inc, $path );
-		next unless -d $dir;
-		unless ( -r $dir ) {
-			Carp::croak("Found directory '$dir', but no read permissions");
-		}
-		return $dir;
-	}
-
-	return undef;
 }
 
 =pod
@@ -230,54 +182,13 @@ located or is not readable.
 
 sub module_dir {
 	my $module = _MODULE(shift);
-	my $dir;
-
-	# Try the new version
-	$dir = _module_dir_new( $module );
-	return $dir if defined $dir;
-
-	# Fall back to the legacy version
-	return _module_dir_old( $module );
-}
-
-sub _module_dir_new {
-	my $module = shift;
-
-	# Create the subpath
-	my $path = File::Spec->catdir(
-		'auto', 'share', 'module',
-		_module_subdir( $module ),
-	);
-
-	# Find the full dir withing @INC
-	foreach my $inc ( @INC ) {
-		next unless defined $inc and ! ref $inc;
-		my $dir = File::Spec->catdir( $inc, $path );
-		next unless -d $dir;
-		unless ( -r $dir ) {
-			Carp::croak("Found directory '$dir', but no read permissions");
+	for my $resolver (@RESOLVERS) {
+		my $dir = $resolver->module_dir($module);
+		if ( defined $dir ) {
+			return $dir;
 		}
-		return $dir;
 	}
-
-	return undef;
-}
-	
-sub _module_dir_old {
-	my $module = shift;
-	my $short  = Class::Inspector->filename($module);
-	my $long   = Class::Inspector->loaded_filename($module);
-	$short =~ tr{/}{:} if IS_MACOS;
-	substr( $short, -3, 3, '' );
-	$long  =~ m/^(.*)\Q$short\E\.pm\z/s or die("Failed to find base dir");
-	my $dir = File::Spec->catdir( "$1", 'auto', $short );
-	unless ( -d $dir ) {
-		Carp::croak("Directory '$dir', does not exist");
-	}
-	unless ( -r $dir ) {
-		Carp::croak("Directory '$dir', no read permissions");
-	}
-	return $dir;
+	Carp::croak("Failed to find share dir for module '$module'");
 }
 
 =pod
@@ -304,55 +215,12 @@ sub dist_file {
 	my $dist = _DIST(shift);
 	my $file = _FILE(shift);
 
-	# Try the new version first
-	my $path = _dist_file_new( $dist, $file );
-	return $path if defined $path;
-
-	# Hand off to the legacy version
-	return _dist_file_old( $dist, $file );;
-}
-
-sub _dist_file_new {
-	my $dist = shift;
-	my $file = shift;
-
-	# If it exists, what should the path be
-	my $dir  = _dist_dir_new( $dist );
-	my $path = File::Spec->catfile( $dir, $file );
-
-	# Does the file exist
-	return undef unless -e $path;
-	unless ( -f $path ) {
-		Carp::croak("Found dist_file '$path', but not a file");
-	}
-	unless ( -r $path ) {
-		Carp::croak("File '$path', no read permissions");
-	}
-
-	return $path;
-}
-
-sub _dist_file_old {
-	my $dist = shift;
-	my $file = shift;
-
-	# Create the subpath
-	my $path = File::Spec->catfile(
-		'auto', split( /-/, $dist ), $file,
-	);
-
-	# Find the full dir withing @INC
-	foreach my $inc ( @INC ) {
-		next unless defined $inc and ! ref $inc;
-		my $full = File::Spec->catdir( $inc, $path );
-		next unless -e $full;
-		unless ( -r $full ) {
-			Carp::croak("Directory '$full', no read permissions");
+	for my $resolver (@RESOLVERS) {
+		my $path = $resolver->dist_file( $dist, $file );
+		if ( defined $path ) {
+			return $path;
 		}
-		return $full;
 	}
-
-	# Couldn't find it
 	Carp::croak("Failed to find shared file '$file' for dist '$dist'");
 }
 
@@ -382,15 +250,14 @@ directory cannot be located, or the file is not readable.
 sub module_file {
 	my $module = _MODULE(shift);
 	my $file   = _FILE(shift);
-	my $dir    = module_dir($module);
-	my $path   = File::Spec->catfile($dir, $file);
-	unless ( -e $path ) {
-		Carp::croak("File '$file' does not exist in module dir");
+	for my $resolver (@RESOLVERS) {
+		my $path = $resolver->module_file( $module, $file );
+		if ( defined $path ) {
+			return $path;
+		}
+
 	}
-	unless ( -r $path ) {
-		Carp::croak("File '$file' cannot be read, no read permissions");
-	}
-	$path;
+	Carp::croak("Failed to find shared file '$file' for module '$module'");
 }
 
 =pod
@@ -459,17 +326,8 @@ sub class_file {
 	Carp::croak("File '$file' does not exist in class or parent shared files");
 }
 
-
-
-
 #####################################################################
 # Support Functions
-
-sub _module_subdir {
-	my $module = shift;
-	$module =~ s/::/-/g;
-	return $module;
-}
 
 sub _dist_packfile {
 	my $module = shift;
