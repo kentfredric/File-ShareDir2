@@ -55,7 +55,8 @@ sub dist_dir {
 sub module_dir {
 	my ( $self, $module ) = @_;
 	require File::Spec;
-	my $module_path = $module =~ s/::/-/g;
+	my $module_path = $module;
+  $module_path =~ s/::/-/g;
 	my $path = File::Spec->catdir( 'auto', 'share', 'module', $module_path );
 
 	# Find the full dir withing @INC
