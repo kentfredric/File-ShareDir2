@@ -16,9 +16,13 @@ sub new {
 	return bless { ref $args[0] ? %{ $args[0] } : @args }, $package;
 }
 
+sub dist_dir {
+  my ( $self, $distname ) = @_;
+  return;
+}
+
 sub dist_file {
 	my ( $self, $distname, $filename ) = @_;
-	return unless $self->can('dist_dir');
 	my $distdir = $self->dist_dir($distname);
 	return unless defined $distdir;
 	require File::Spec;
@@ -33,9 +37,13 @@ sub dist_file {
 	return $path;
 }
 
+sub module_dir {
+  my ( $self, $module_name ) = @_;
+  return;
+}
+
 sub module_file {
 	my ( $self, $modulename, $filename ) = @_;
-	return unless $self->can('module_dir');
 	my $moduledir = $self->module_dir($modulename);
 	return unless defined $moduledir;
 	require File::Spec;

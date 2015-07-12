@@ -23,7 +23,12 @@ sub dist_dir {
 	foreach my $inc (@INC) {
 		next unless defined $inc and !ref $inc;
 		my $dir = File::Spec->catdir( $inc, $path );
-		next unless -d $dir;
+    unless ( -d $dir ) {
+      File::ShareDir2::log_trace { "$self:dist_dir: $distname not in $inc" };
+      next;
+    }
+    File::ShareDir2::log_trace { "$self:dist_dir: found $distname in $inc" };
+
 		unless ( -r $dir ) {
 			croak("Found directory '$dir', but no read permissions");
 		}
@@ -42,7 +47,11 @@ sub module_dir {
 	foreach my $inc (@INC) {
 		next unless defined $inc and !ref $inc;
 		my $dir = File::Spec->catdir( $inc, $path );
-		next unless -d $dir;
+    unless ( -d $dir ) {
+      File::ShareDir2::log_trace { "$self:module_dir: $module not in $inc" };
+      next;
+    }
+    File::ShareDir2::log_trace { "$self:module_dir: found $module in $inc" };
 		unless ( -r $dir ) {
 			croak("Found directory '$dir', but no read permissions");
 		}
