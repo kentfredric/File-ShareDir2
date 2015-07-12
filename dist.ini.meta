@@ -21,6 +21,8 @@ PodWeaver.post_code_replacer = replace_with_blank
 [Munge::Whitespace]
 filename = LICENSE
 
+[ShareDir]
+
 ;authordep Pod::Weaver::Section::Contributors = 0
 
 ;[Prereqs / TestRecommends]
