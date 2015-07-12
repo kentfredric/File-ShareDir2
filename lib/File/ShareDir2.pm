@@ -126,8 +126,10 @@ use constant IS_MACOS => !! ($^O eq 'MacOS');
 
 
 require File::ShareDir2::Resolver::Perl;
+require File::ShareDir2::Resolver::Perl::Legacy;
 our @HOOKS = (
-  File::ShareDir2::Resolver::Perl->new()
+  File::ShareDir2::Resolver::Perl->new(),
+  File::ShareDir2::Resolver::Perl::Legacy->new(),
 );
 
 #####################################################################
