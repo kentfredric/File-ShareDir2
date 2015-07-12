@@ -8,7 +8,7 @@ use ExtUtils::MakeMaker;
 
 my %WriteMakefileArgs = (
   "ABSTRACT" => "Locate per-dist and per-module shared files",
-  "AUTHOR" => "Adam Kennedy <adamk\@cpan.org>, Kent Fredric <kentnl\@cpan.org>",
+  "AUTHOR" => "Adam Kennedy <adamk\@cpan.org>",
   "CONFIGURE_REQUIRES" => {
     "ExtUtils::MakeMaker" => 0
   },

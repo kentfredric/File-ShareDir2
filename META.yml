@@ -2,7 +2,6 @@
 abstract: 'Locate per-dist and per-module shared files'
 author:
   - 'Adam Kennedy <adamk@cpan.org>'
-  - 'Kent Fredric <kentnl@cpan.org>'
 build_requires:
   ExtUtils::MakeMaker: '0'
   File::Spec: '0'

@@ -767,23 +767,13 @@ it and/or modify it under the same terms as Perl itself.
 The full text of the license can be found in the
 LICENSE file included with this module.
 
-=head1 AUTHORS
-
-=over 4
-
-=item *
+=head1 AUTHOR
 
 Adam Kennedy <adamk@cpan.org>
 
-=item *
-
-Kent Fredric <kentnl@cpan.org>
-
-=back
-
 =head1 CONTRIBUTORS
 
-=for stopwords adam adamk@cpan.org adam@phase-n.com Graham Knop hdp@cpan.org ishigaki@cpan.org Jens Rehsack miyagawa@cpan.org rjbs@cpan.org smueller@cpan.org
+=for stopwords adam adamk@cpan.org adam@phase-n.com Graham Knop hdp@cpan.org ishigaki@cpan.org Jens Rehsack Kent Fredric miyagawa@cpan.org rjbs@cpan.org smueller@cpan.org
 
 =over 4
 
@@ -814,6 +804,10 @@ ishigaki@cpan.org <ishigaki@cpan.org@88f4d9cd-8a04-0410-9d60-8f63309c3137>
 =item *
 
 Jens Rehsack <sno@netbsd.org>
+
+=item *
+
+Kent Fredric <kentnl@cpan.org>
 
 =item *
 
