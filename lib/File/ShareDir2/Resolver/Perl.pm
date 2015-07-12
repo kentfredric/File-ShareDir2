@@ -15,40 +15,40 @@ require File::ShareDir2::Resolver;
 our @ISA = ('File::ShareDir2::Resolver');
 
 sub dist_dir {
-  my ( $self, $distname ) = @_;
-  require File::Spec;
-  my $path = File::Spec->catdir( 'auto', 'share', 'dist', $distname );
+	my ( $self, $distname ) = @_;
+	require File::Spec;
+	my $path = File::Spec->catdir( 'auto', 'share', 'dist', $distname );
 
-  # Find the full dir withing @INC
-  foreach my $inc (@INC) {
-    next unless defined $inc and !ref $inc;
-    my $dir = File::Spec->catdir( $inc, $path );
-    next unless -d $dir;
-    unless ( -r $dir ) {
-      croak("Found directory '$dir', but no read permissions");
-    }
-    return $dir;
-  }
-  return;
+	# Find the full dir withing @INC
+	foreach my $inc (@INC) {
+		next unless defined $inc and !ref $inc;
+		my $dir = File::Spec->catdir( $inc, $path );
+		next unless -d $dir;
+		unless ( -r $dir ) {
+			croak("Found directory '$dir', but no read permissions");
+		}
+		return $dir;
+	}
+	return;
 }
 
 sub module_dir {
-  my ( $self, $module ) = @_;
-  require File::Spec;
-  my $module_path = $module =~ s/::/-/g;
-  my $path = File::Spec->catdir( 'auto', 'share', 'module', $module_path );
+	my ( $self, $module ) = @_;
+	require File::Spec;
+	my $module_path = $module =~ s/::/-/g;
+	my $path = File::Spec->catdir( 'auto', 'share', 'module', $module_path );
 
-  # Find the full dir withing @INC
-  foreach my $inc (@INC) {
-    next unless defined $inc and !ref $inc;
-    my $dir = File::Spec->catdir( $inc, $path );
-    next unless -d $dir;
-    unless ( -r $dir ) {
-      croak("Found directory '$dir', but no read permissions");
-    }
-    return $dir;
-  }
-  return;
+	# Find the full dir withing @INC
+	foreach my $inc (@INC) {
+		next unless defined $inc and !ref $inc;
+		my $dir = File::Spec->catdir( $inc, $path );
+		next unless -d $dir;
+		unless ( -r $dir ) {
+			croak("Found directory '$dir', but no read permissions");
+		}
+		return $dir;
+	}
+	return;
 }
 
 1;

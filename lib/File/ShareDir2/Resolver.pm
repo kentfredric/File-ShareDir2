@@ -11,36 +11,36 @@ our $VERSION = '0.001000';
 our $AUTHORITY = 'cpan:KENTNL'; # AUTHORITY
 
 sub new {
-  my ( $package, @args ) = @_;
-  use warnings FATAL => 'misc'; # Error on unbalanced @args
-  return bless { ref $args[0] ? %{$args[0]} : @args }, $package;
+	my ( $package, @args ) = @_;
+	use warnings FATAL => 'misc';    # Error on unbalanced @args
+	return bless { ref $args[0] ? %{ $args[0] } : @args }, $package;
 }
 
 sub dist_file {
-  my ( $self , $distname, $filename ) = @_;
-  return unless $self->can('dist_dir');
-  my $distdir = $self->dist_dir( $distname );
-  return unless defined $distdir;
-  require File::Spec;
-  my $path = File::Spec->catfile( $distdir, $filename  );
-  return unless -e $path;
+	my ( $self, $distname, $filename ) = @_;
+	return unless $self->can('dist_dir');
+	my $distdir = $self->dist_dir($distname);
+	return unless defined $distdir;
+	require File::Spec;
+	my $path = File::Spec->catfile( $distdir, $filename );
+	return unless -e $path;
 	unless ( -f $path ) {
 		Carp::croak("Found dist_file '$path', but not a file");
 	}
 	unless ( -r $path ) {
 		Carp::croak("File '$path', no read permissions");
 	}
-  return $path;
+	return $path;
 }
 
 sub module_file {
-  my ( $self, $modulename, $filename ) = @_;
-  return unless $self->can('module_dir');
-  my $moduledir = $self->module_dir( $modulename );
-  return unless defined $moduledir;
-  require File::Spec;
-  my $path = File::Spec->catfile( $moduledir, $filename );
-  return unless -e $path;
+	my ( $self, $modulename, $filename ) = @_;
+	return unless $self->can('module_dir');
+	my $moduledir = $self->module_dir($modulename);
+	return unless defined $moduledir;
+	require File::Spec;
+	my $path = File::Spec->catfile( $moduledir, $filename );
+	return unless -e $path;
 	unless ( -r $path ) {
 		Carp::croak("File '$filename' cannot be read, no read permissions");
 	}

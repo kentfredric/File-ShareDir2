@@ -105,32 +105,26 @@ use 5.006;    # our
 use strict;
 use warnings;
 
-use Carp             ();
-use Config           ();
-use Exporter         ();
+use Carp     ();
+use Config   ();
+use Exporter ();
 
 our $VERSION = '0.001000';
 our @ISA       = 'Exporter';
 our @EXPORT_OK = qw{
-  dist_dir
-  dist_file
-  module_dir
-  module_file
-  class_file
+	dist_dir
+	dist_file
+	module_dir
+	module_file
+	class_file
 };
 our %EXPORT_TAGS = ( ALL => [@EXPORT_OK], );
 
 our $AUTHORITY = 'cpan:KENTNL'; # AUTHORITY
 
-use constant IS_MACOS => !! ($^O eq 'MacOS');
-
-
 require File::ShareDir2::Resolver::Perl;
 require File::ShareDir2::Resolver::Perl::Legacy;
-our @HOOKS = (
-  File::ShareDir2::Resolver::Perl->new(),
-  File::ShareDir2::Resolver::Perl::Legacy->new(),
-);
+our @RESOLVERS = ( File::ShareDir2::Resolver::Perl->new(), File::ShareDir2::Resolver::Perl::Legacy->new(), );
 
 #####################################################################
 # Interface Functions
@@ -153,10 +147,11 @@ our @HOOKS = (
 
 sub dist_dir {
 	my $dist = _DIST(shift);
-  for my $hook ( @HOOKS ) {
-    my $result = $hook->dist_dir( $dist );
-    return $result if defined $result;
-  }
+	for my $resolver (@RESOLVERS) {
+		my $result = $resolver->dist_dir($dist);
+		return $result if defined $result;
+	}
+
 	# Ran out of options
 	Carp::croak("Failed to find share dir for dist '$dist'");
 }
@@ -182,11 +177,11 @@ sub dist_dir {
 
 sub module_dir {
 	my $module = _MODULE(shift);
-  for my $hook ( @HOOKS ) {
-    my $dir = $hook->module_dir( $module );
-    return $dir if defined $dir;
-  }
-  Carp::croak("Failed to find share dir for module '$module'");
+	for my $resolver (@RESOLVERS) {
+		my $dir = $resolver->module_dir($module);
+		return $dir if defined $dir;
+	}
+	Carp::croak("Failed to find share dir for module '$module'");
 }
 
 #pod =pod
@@ -213,13 +208,12 @@ sub dist_file {
 	my $dist = _DIST(shift);
 	my $file = _FILE(shift);
 
-  for my $hook ( @HOOKS ) {
-	  my $path = $hook->dist_file( $dist, $file );
-    return $path if defined $path;
-  }
+	for my $resolver (@RESOLVERS) {
+		my $path = $resolver->dist_file( $dist, $file );
+		return $path if defined $path;
+	}
 	Carp::croak("Failed to find shared file '$file' for dist '$dist'");
 }
-
 
 #pod =pod
 #pod
@@ -247,10 +241,10 @@ sub dist_file {
 sub module_file {
 	my $module = _MODULE(shift);
 	my $file   = _FILE(shift);
-  for my $hook ( @HOOKS ) {
-    my $path = $hook->module_file( $module, $file );
-    return $path if defined $path;
-  }
+	for my $resolver (@RESOLVERS) {
+		my $path = $resolver->module_file( $module, $file );
+		return $path if defined $path;
+	}
 	Carp::croak("Failed to find shared file '$file' for module '$module'");
 }
 
@@ -291,24 +285,21 @@ sub class_file {
 	# Rather than using Class::ISA, we'll use an inlined version
 	# that implements the same basic algorithm.
 	my @path  = ();
-	my @queue = ( $module );
+	my @queue = ($module);
 	my %seen  = ( $module => 1 );
 	while ( my $cl = shift @queue ) {
 		push @path, $cl;
 		no strict 'refs';
-		unshift @queue, grep { ! $seen{$_}++ }
-			map { s/^::/main::/; s/\'/::/g; $_ }
-			( @{"${cl}::ISA"} );
+		unshift @queue, grep { !$seen{$_}++ }
+			map { s/^::/main::/; s/\'/::/g; $_ } ( @{"${cl}::ISA"} );
 	}
 
 	# Search up the path
-	foreach my $class ( @path ) {
+	foreach my $class (@path) {
 		local $@;
-		my $dir = eval {
-		 	module_dir($class);
-		};
+		my $dir = eval { module_dir($class); };
 		next if $@;
-		my $path = File::Spec->catfile($dir, $file);
+		my $path = File::Spec->catfile( $dir, $file );
 		unless ( -e $path ) {
 			next;
 		}
@@ -326,17 +317,15 @@ sub class_file {
 sub _dist_packfile {
 	my $module = shift;
 	my @dirs   = grep { -e } ( $Config::Config{archlibexp}, $Config::Config{sitearchexp} );
-	my $file   = File::Spec->catfile(
-		'auto', split( /::/, $module), '.packlist',
-	);
+	my $file   = File::Spec->catfile( 'auto', split( /::/, $module ), '.packlist', );
 
-	foreach my $dir ( @dirs ) {
+	foreach my $dir (@dirs) {
 		my $path = File::Spec->catfile( $dir, $file );
 		next unless -f $path;
 
 		# Load the file
 		my $packlist = ExtUtils::Packlist->new($path);
-		unless ( $packlist ) {
+		unless ($packlist) {
 			die "Failed to load .packlist file for $module";
 		}
 
@@ -348,19 +337,18 @@ sub _dist_packfile {
 
 # Inlined from Params::Util pure perl version
 sub _CLASS {
-    (defined $_[0] and ! ref $_[0] and $_[0] =~ m/^[^\W\d]\w*(?:::\w+)*\z/s) ? $_[0] : undef;
+	( defined $_[0] and !ref $_[0] and $_[0] =~ m/^[^\W\d]\w*(?:::\w+)*\z/s ) ? $_[0] : undef;
 }
-
 
 # Maintainer note: The following private functions are used by
 #                  File::ShareDir::PAR. (It has to or else it would have to copy&fork)
 #                  So if you significantly change or even remove them, please
-#                  notify the File::ShareDir::PAR maintainer(s). Thank you!    
+#                  notify the File::ShareDir::PAR maintainer(s). Thank you!
 
 # Matches a valid distribution name
 ### This is a total guess at this point
 sub _DIST {
-	if ( defined $_[0] and ! ref $_[0] and $_[0] =~ /^[a-z0-9+_-]+$/is ) {
+	if ( defined $_[0] and !ref $_[0] and $_[0] =~ /^[a-z0-9+_-]+$/is ) {
 		return shift;
 	}
 	Carp::croak("Not a valid distribution name");
@@ -369,7 +357,6 @@ sub _DIST {
 # A valid and loaded module name
 sub _MODULE {
 	my $module = _CLASS(shift) or Carp::croak("Not a valid module name");
-  require Class::Inspector;
 	if ( Class::Inspector->loaded($module) ) {
 		return $module;
 	}
@@ -379,7 +366,7 @@ sub _MODULE {
 # A valid file name
 sub _FILE {
 	my $file = shift;
-	unless ( defined $file and ! ref $file and length $file ) {
+	unless ( defined $file and !ref $file and length $file ) {
 		Carp::croak("Did not pass a file name");
 	}
 	if ( File::Spec->file_name_is_absolute($file) ) {
