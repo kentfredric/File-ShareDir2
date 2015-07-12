@@ -124,6 +124,18 @@
       "File::ShareDir2" : {
          "file" : "lib/File/ShareDir2.pm",
          "version" : "0.001000"
+      },
+      "File::ShareDir2::Resolver" : {
+         "file" : "lib/File/ShareDir2/Resolver.pm",
+         "version" : "0.001000"
+      },
+      "File::ShareDir2::Resolver::Perl" : {
+         "file" : "lib/File/ShareDir2/Resolver/Perl.pm",
+         "version" : "0.001000"
+      },
+      "File::ShareDir::Resolver::Perl::Legacy" : {
+         "file" : "lib/File/ShareDir2/Resolver/Perl/Legacy.pm",
+         "version" : "0.001000"
       }
    },
    "release_status" : "stable",
@@ -330,7 +342,10 @@
             "config" : {
                "Dist::Zilla::Plugin::Test::Compile::PerFile" : {
                   "file" : [
-                     "lib/File/ShareDir2.pm"
+                     "lib/File/ShareDir2.pm",
+                     "lib/File/ShareDir2/Resolver.pm",
+                     "lib/File/ShareDir2/Resolver/Perl.pm",
+                     "lib/File/ShareDir2/Resolver/Perl/Legacy.pm"
                   ],
                   "path_translator" : "base64_filter",
                   "prefix" : "t/00-compile",

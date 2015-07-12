@@ -22,6 +22,15 @@ provides:
   File::ShareDir2:
     file: lib/File/ShareDir2.pm
     version: '0.001000'
+  File::ShareDir2::Resolver:
+    file: lib/File/ShareDir2/Resolver.pm
+    version: '0.001000'
+  File::ShareDir2::Resolver::Perl:
+    file: lib/File/ShareDir2/Resolver/Perl.pm
+    version: '0.001000'
+  File::ShareDir::Resolver::Perl::Legacy:
+    file: lib/File/ShareDir2/Resolver/Perl/Legacy.pm
+    version: '0.001000'
 requires:
   Carp: '0'
   Class::Inspector: '0'
