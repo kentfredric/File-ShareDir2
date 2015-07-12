@@ -101,7 +101,7 @@ exception.
 
 =cut
 
-use 5.005;
+use 5.006;    # our
 use strict;
 use warnings;
 
@@ -111,22 +111,19 @@ use Exporter         ();
 use File::Spec       ();
 use Class::Inspector ();
 
-use vars qw{ $VERSION @ISA @EXPORT_OK %EXPORT_TAGS };
-BEGIN {
-	$VERSION     = '0.001000';
-	@ISA         = qw{ Exporter };
-	@EXPORT_OK   = qw{
-		dist_dir
-		dist_file
-		module_dir
-		module_file
-		class_dir
-		class_file
-	};
-	%EXPORT_TAGS = (
-		ALL => [ @EXPORT_OK ],
-	);
-}
+our $VERSION   = '0.001000';
+our @ISA       = 'Exporter';
+our @EXPORT_OK = qw{
+	dist_dir
+	dist_file
+	module_dir
+	module_file
+	class_dir
+	class_file
+};
+our %EXPORT_TAGS = ( ALL => [@EXPORT_OK], );
+
+# AUTHORITY
 
 use constant IS_MACOS => !! ($^O eq 'MacOS');
 

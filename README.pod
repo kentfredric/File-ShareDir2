@@ -8,7 +8,7 @@ File::ShareDir2 - Locate per-dist and per-module shared files
 
 =head1 VERSION
 
-version 0.000000
+version 0.001000
 
 =head1 SYNOPSIS
 
