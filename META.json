@@ -807,17 +807,14 @@
    },
    "x_authority" : "cpan:KENTNL",
    "x_contributors" : [
-      "adam <adam@88f4d9cd-8a04-0410-9d60-8f63309c3137>",
-      "adamk@cpan.org <adamk@cpan.org@88f4d9cd-8a04-0410-9d60-8f63309c3137>",
-      "adam@phase-n.com <adam@phase-n.com@88f4d9cd-8a04-0410-9d60-8f63309c3137>",
       "Graham Knop <haarg@haarg.org>",
-      "hdp@cpan.org <hdp@cpan.org@88f4d9cd-8a04-0410-9d60-8f63309c3137>",
-      "ishigaki@cpan.org <ishigaki@cpan.org@88f4d9cd-8a04-0410-9d60-8f63309c3137>",
+      "Hans Dieter Pearcey <hdp@cpan.org>",
       "Jens Rehsack <sno@netbsd.org>",
+      "Kenichi Ishigaki <ishigaki@cpan.org>",
       "Kent Fredric <kentnl@cpan.org>",
-      "miyagawa@cpan.org <miyagawa@cpan.org@88f4d9cd-8a04-0410-9d60-8f63309c3137>",
-      "rjbs@cpan.org <rjbs@cpan.org@88f4d9cd-8a04-0410-9d60-8f63309c3137>",
-      "smueller@cpan.org <smueller@cpan.org@88f4d9cd-8a04-0410-9d60-8f63309c3137>"
+      "Ricardo SIGNES <rjbs@cpan.org>",
+      "smueller@cpan.org <smueller@cpan.org@88f4d9cd-8a04-0410-9d60-8f63309c3137>",
+      "Tatsuhiko Miyagawa <miyagawa@cpan.org>"
    ]
 }
 
