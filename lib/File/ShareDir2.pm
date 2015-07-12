@@ -168,7 +168,7 @@ sub dist_dir {
 	for my $resolver (@RESOLVERS) {
 		my $result = $resolver->dist_dir($dist);
 		if ( defined $result ) {
-			log_trace { "dist_dir:$dist found in $resolver" };
+			log_trace { "dist_dir:$dist found in $resolver: $result" };
 			return $result;
 		}
 		log_trace { "dist_dir:$dist not in $resolver" };
@@ -202,7 +202,7 @@ sub module_dir {
 	for my $resolver (@RESOLVERS) {
 		my $dir = $resolver->module_dir($module);
 		if ( defined $dir ) {
-			log_trace { "module_dir:found $module in $resolver" };
+			log_trace { "module_dir:found $module in $resolver: $result" };
 			return $dir;
 		}
 		log_trace { "module_dir:$module not in $resolver" };
@@ -237,7 +237,7 @@ sub dist_file {
 	for my $resolver (@RESOLVERS) {
 		my $path = $resolver->dist_file( $dist, $file );
 		if ( defined $path ) {
-			log_trace { "dist_file: found $dist / $file in $resolver" };
+			log_trace { "dist_file: found $dist / $file in $resolver: $path" };
 			return $path;
 		}
 		log_trace { "dist_file: $dist / $file not in $resolver" };
@@ -274,7 +274,7 @@ sub module_file {
 	for my $resolver (@RESOLVERS) {
 		my $path = $resolver->module_file( $module, $file );
 		if ( defined $path ) {
-			log_trace { "module_file: found $module / $file in $resolver" };
+			log_trace { "module_file: found $module / $file in $resolver: $path" };
 			return $path;
 		}
 		log_trace { "module_file: $module / $file not in $resolver" };
