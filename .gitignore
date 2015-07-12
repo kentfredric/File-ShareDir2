@@ -1,7 +1,9 @@
 /MANIFEST
 /MANIFEST.bak
-/META.*
-/MYMETA.*
+/META.yml
+/META.json
+/MYMETA.yml
+/MYMETA.json
 /Makefile
 /Makefile.old
 /README
@@ -10,6 +12,7 @@
 *~
 *#
 .#*
-/File-ShareDir2-*/
-/File-ShareDir2-*.tar.gz
+/File-ShareDir2-*
 /cover_db/
+/tmp/
+/.build

@@ -1,0 +1,266 @@
+=pod
+
+=encoding UTF-8
+
+=head1 NAME
+
+File::ShareDir2 - Locate per-dist and per-module shared files
+
+=head1 VERSION
+
+version 0.000000
+
+=head1 SYNOPSIS
+
+  use File::ShareDir2 ':ALL';
+  
+  # Where are distribution-level shared data files kept
+  $dir = dist_dir('File-ShareDir2');
+  
+  # Where are module-level shared data files kept
+  $dir = module_dir('File::ShareDir2');
+  
+  # Find a specific file in our dist/module shared dir
+  $file = dist_file(  'File-ShareDir2',  'file/name.txt');
+  $file = module_file('File::ShareDir2', 'file/name.txt');
+  
+  # Like module_file, but search up the inheritance tree
+  $file = class_file( 'Foo::Bar', 'file/name.txt' );
+
+=head1 DESCRIPTION
+
+The intent of L<File::ShareDir2> is to provide a companion to
+L<Class::Inspector> and L<File::HomeDir>, modules that take a
+process that is well-known by advanced Perl developers but gets a
+little tricky, and make it more available to the larger Perl community.
+
+Quite often you want or need your Perl module (CPAN or otherwise)
+to have access to a large amount of read-only data that is stored
+on the file-system at run-time.
+
+On a linux-like system, this would be in a place such as /usr/share,
+however Perl runs on a wide variety of different systems, and so
+the use of any one location is unreliable.
+
+Perl provides a little-known method for doing this, but almost
+nobody is aware that it exists. As a result, module authors often
+go through some very strange ways to make the data available to
+their code.
+
+The most common of these is to dump the data out to an enormous
+Perl data structure and save it into the module itself. The
+result are enormous multi-megabyte .pm files that chew up a
+lot of memory needlessly.
+
+Another method is to put the data "file" after the __DATA__ compiler
+tag and limit yourself to access as a filehandle.
+
+The problem to solve is really quite simple.
+
+  1. Write the data files to the system at install time.
+  
+  2. Know where you put them at run-time.
+
+Perl's install system creates an "auto" directory for both
+every distribution and for every module file.
+
+These are used by a couple of different auto-loading systems
+to store code fragments generated at install time, and various
+other modules written by the Perl "ancient masters".
+
+But the same mechanism is available to any dist or module to
+store any sort of data.
+
+=head2 Using Data in your Module
+
+C<File::ShareDir2> forms one half of a two part solution.
+
+Once the files have been installed to the correct directory,
+you can use C<File::ShareDir2> to find your files again after
+the installation.
+
+For the installation half of the solution, see L<Module::Install>
+and its C<install_share> directive.
+
+=head1 FUNCTIONS
+
+C<File::ShareDir2> provides four functions for locating files and
+directories.
+
+For greater maintainability, none of these are exported by default
+and you are expected to name the ones you want at use-time, or provide
+the C<':ALL'> tag. All of the following are equivalent.
+
+  # Load but don't import, and then call directly
+  use File::ShareDir2;
+  $dir = File::ShareDir2::dist_dir('My-Dist');
+  
+  # Import a single function
+  use File::ShareDir2 'dist_dir';
+  dist_dir('My-Dist');
+  
+  # Import all the functions
+  use File::ShareDir2 ':ALL';
+  dist_dir('My-Dist');
+
+All of the functions will check for you that the dir/file actually
+exists, and that you have read permissions, or they will throw an
+exception.
+
+=head2 dist_dir
+
+  # Get a distribution's shared files directory
+  my $dir = dist_dir('My-Distribution');
+
+The C<dist_dir> function takes a single parameter of the name of an
+installed (CPAN or otherwise) distribution, and locates the shared
+data directory created at install time for it.
+
+Returns the directory path as a string, or dies if it cannot be
+located or is not readable.
+
+=head2 module_dir
+
+  # Get a module's shared files directory
+  my $dir = module_dir('My::Module');
+
+The C<module_dir> function takes a single parameter of the name of an
+installed (CPAN or otherwise) module, and locates the shared data
+directory created at install time for it.
+
+In order to find the directory, the module B<must> be loaded when
+calling this function.
+
+Returns the directory path as a string, or dies if it cannot be
+located or is not readable.
+
+=head2 dist_file
+
+  # Find a file in our distribution shared dir
+  my $dir = dist_file('My-Distribution', 'file/name.txt');
+
+The C<dist_file> function takes two params of the distribution name
+and file name, locates the dist dir, and then finds the file within
+it, verifying that the file actually exists, and that it is readable.
+
+The filename should be a relative path in the format of your local
+filesystem. It will simply added to the directory using L<File::Spec>'s
+C<catfile> method.
+
+Returns the file path as a string, or dies if the file or the dist's
+directory cannot be located, or the file is not readable.
+
+=head2 module_file
+
+  # Find a file in our module shared dir
+  my $dir = module_file('My::Module', 'file/name.txt');
+
+The C<module_file> function takes two params of the module name
+and file name. It locates the module dir, and then finds the file within
+it, verifying that the file actually exists, and that it is readable.
+
+In order to find the directory, the module B<must> be loaded when
+calling this function.
+
+The filename should be a relative path in the format of your local
+filesystem. It will simply added to the directory using L<File::Spec>'s
+C<catfile> method.
+
+Returns the file path as a string, or dies if the file or the dist's
+directory cannot be located, or the file is not readable.
+
+=head2 class_file
+
+  # Find a file in our module shared dir, or in our parent class
+  my $dir = class_file('My::Module', 'file/name.txt');
+
+The C<module_file> function takes two params of the module name
+and file name. It locates the module dir, and then finds the file within
+it, verifying that the file actually exists, and that it is readable.
+
+In order to find the directory, the module B<must> be loaded when
+calling this function.
+
+The filename should be a relative path in the format of your local
+filesystem. It will simply added to the directory using L<File::Spec>'s
+C<catfile> method.
+
+If the file is NOT found for that module, C<class_file> will scan up
+the module's @ISA tree, looking for the file in all of the parent
+classes.
+
+This allows you to, in effect, "subclass" shared files.
+
+Returns the file path as a string, or dies if the file or the dist's
+directory cannot be located, or the file is not readable.
+
+=head1 SEE ALSO
+
+L<File::ShareDir::Install>, L<File::HomeDir>,
+L<Module::Install>, L<Module::Install::Share>,
+L<File::ShareDir::PAR>, L<Dist::Zilla::Plugin::ShareDir>
+
+=head1 AUTHOR
+
+Adam Kennedy <adamk@cpan.org>
+
+=head1 CONTRIBUTORS
+
+=for stopwords adam adamk@cpan.org adam@phase-n.com Graham Knop hdp@cpan.org ishigaki@cpan.org Jens Rehsack Kent Fredric miyagawa@cpan.org rjbs@cpan.org smueller@cpan.org
+
+=over 4
+
+=item *
+
+adam <adam@88f4d9cd-8a04-0410-9d60-8f63309c3137>
+
+=item *
+
+adamk@cpan.org <adamk@cpan.org@88f4d9cd-8a04-0410-9d60-8f63309c3137>
+
+=item *
+
+adam@phase-n.com <adam@phase-n.com@88f4d9cd-8a04-0410-9d60-8f63309c3137>
+
+=item *
+
+Graham Knop <haarg@haarg.org>
+
+=item *
+
+hdp@cpan.org <hdp@cpan.org@88f4d9cd-8a04-0410-9d60-8f63309c3137>
+
+=item *
+
+ishigaki@cpan.org <ishigaki@cpan.org@88f4d9cd-8a04-0410-9d60-8f63309c3137>
+
+=item *
+
+Jens Rehsack <sno@netbsd.org>
+
+=item *
+
+Kent Fredric <kentnl@cpan.org>
+
+=item *
+
+miyagawa@cpan.org <miyagawa@cpan.org@88f4d9cd-8a04-0410-9d60-8f63309c3137>
+
+=item *
+
+rjbs@cpan.org <rjbs@cpan.org@88f4d9cd-8a04-0410-9d60-8f63309c3137>
+
+=item *
+
+smueller@cpan.org <smueller@cpan.org@88f4d9cd-8a04-0410-9d60-8f63309c3137>
+
+=back
+
+=head1 COPYRIGHT AND LICENSE
+
+This software is copyright (c) 2005 by Adam Kennedy <adamk@cpan.org>.
+
+This is free software; you can redistribute it and/or modify it under
+the same terms as the Perl 5 programming language system itself.
+
+=cut
