@@ -8,7 +8,7 @@ use warnings;
 use 5.008;
 use ExtUtils::MakeMaker;
 
- use lib 'inc/File-ShareDir-Install';
+use lib 'inc/File-ShareDir-Install';
 
 use File::ShareDir::Install;
 install_share dist => "share";
