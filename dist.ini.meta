@@ -15,13 +15,18 @@ bumpversions      = 1
 srcreadme         = pod
 ;-remove           = Author::KENTNL::RecommendFixes
 -remove           = MetaData::BuiltWith
+-remove           = MakeMaker
 PodWeaver.replacer = replace_with_comment
 PodWeaver.post_code_replacer = replace_with_blank
 
-[Munge::Whitespace]
-filename = LICENSE
+[MakeMaker::Awesome]
+delimiter = |
+header = | use lib 'inc/File-ShareDir-Install';
 
 [ShareDir]
+
+[Munge::Whitespace]
+filename = LICENSE
 
 ;authordep Pod::Weaver::Section::Contributors = 0
 

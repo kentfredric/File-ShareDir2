@@ -15,13 +15,9 @@
    "name" : "File-ShareDir2",
    "prereqs" : {
       "configure" : {
-         "recommends" : {
-            "ExtUtils::MakeMaker" : "7.00",
-            "File::ShareDir::Install" : "0.10"
-         },
          "requires" : {
             "ExtUtils::MakeMaker" : "0",
-            "File::ShareDir::Install" : "0.06",
+            "File::ShareDir::Install" : "0.03",
             "perl" : "5.008"
          }
       },
@@ -48,7 +44,7 @@
             "Dist::Zilla::Plugin::Git::Tag" : "0",
             "Dist::Zilla::Plugin::GithubMeta" : "0",
             "Dist::Zilla::Plugin::License" : "0",
-            "Dist::Zilla::Plugin::MakeMaker" : "0",
+            "Dist::Zilla::Plugin::MakeMaker::Awesome" : "0",
             "Dist::Zilla::Plugin::Manifest" : "0",
             "Dist::Zilla::Plugin::ManifestSkip" : "0",
             "Dist::Zilla::Plugin::MetaConfig" : "0",
@@ -483,16 +479,6 @@
             "version" : "1.009"
          },
          {
-            "class" : "Dist::Zilla::Plugin::MakeMaker",
-            "config" : {
-               "Dist::Zilla::Role::TestRunner" : {
-                  "default_jobs" : "10"
-               }
-            },
-            "name" : "@Author::KENTNL/MakeMaker",
-            "version" : "5.037"
-         },
-         {
             "class" : "Dist::Zilla::Plugin::Author::KENTNL::RecommendFixes",
             "name" : "@Author::KENTNL/Author::KENTNL::RecommendFixes",
             "version" : "0.005001"
@@ -743,6 +729,21 @@
             "version" : "5.037"
          },
          {
+            "class" : "Dist::Zilla::Plugin::MakeMaker::Awesome",
+            "config" : {
+               "Dist::Zilla::Role::TestRunner" : {
+                  "default_jobs" : 1
+               }
+            },
+            "name" : "MakeMaker::Awesome",
+            "version" : "0.34"
+         },
+         {
+            "class" : "Dist::Zilla::Plugin::ShareDir",
+            "name" : "ShareDir",
+            "version" : "5.037"
+         },
+         {
             "class" : "Dist::Zilla::Plugin::Munge::Whitespace",
             "config" : {
                "Dist::Zilla::Plugin::Munge::Whitespace" : {
@@ -753,11 +754,6 @@
             },
             "name" : "Munge::Whitespace",
             "version" : "0.001000"
-         },
-         {
-            "class" : "Dist::Zilla::Plugin::ShareDir",
-            "name" : "ShareDir",
-            "version" : "5.037"
          },
          {
             "class" : "Dist::Zilla::Plugin::FinderCode",

@@ -1,12 +1,8 @@
 do { my $x = {
        'configure' => {
-                        'recommends' => {
-                                          'ExtUtils::MakeMaker' => '7.00',
-                                          'File::ShareDir::Install' => '0.10'
-                                        },
                         'requires' => {
                                         'ExtUtils::MakeMaker' => '0',
-                                        'File::ShareDir::Install' => '0.06',
+                                        'File::ShareDir::Install' => '0.03',
                                         'perl' => '5.008'
                                       }
                       },
@@ -33,7 +29,7 @@ do { my $x = {
                                       'Dist::Zilla::Plugin::Git::Tag' => '0',
                                       'Dist::Zilla::Plugin::GithubMeta' => '0',
                                       'Dist::Zilla::Plugin::License' => '0',
-                                      'Dist::Zilla::Plugin::MakeMaker' => '0',
+                                      'Dist::Zilla::Plugin::MakeMaker::Awesome' => '0',
                                       'Dist::Zilla::Plugin::Manifest' => '0',
                                       'Dist::Zilla::Plugin::ManifestSkip' => '0',
                                       'Dist::Zilla::Plugin::MetaConfig' => '0',
