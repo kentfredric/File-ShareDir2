@@ -16,201 +16,221 @@ our %ALREADY;
 
 require Exporter;
 
-our @ISA              = qw( Exporter );
-our @EXPORT           = qw( install_share delete_share );
-our @EXPORT_OK        = qw( postamble install_share delete_share );
+our @ISA = qw( Exporter );
+our @EXPORT = qw( install_share delete_share );
+our @EXPORT_OK = qw( postamble install_share delete_share );
 our $INCLUDE_DOTFILES = 0;
-our $INCLUDE_DOTDIRS  = 0;
+our $INCLUDE_DOTDIRS = 0;
 
 #####################################################################
-sub install_share {
-	my $dir  = @_ ? pop   : 'share';
-	my $type = @_ ? shift : 'dist';
-	unless ( defined $type
-		and ( $type =~ /^(module|dist)$/ ) )
-	{
-		confess "Illegal or invalid share dir type '$type'";
-	}
+sub install_share
+{
+    my $dir  = @_ ? pop : 'share';
+    my $type = @_ ? shift : 'dist';
+    unless ( defined $type and 
+            ( $type =~ /^(module|dist)$/ ) ) {
+        confess "Illegal or invalid share dir type '$type'";
+    }
 
-	if ( $type eq 'dist' and @_ ) {
-		confess "Too many parameters to install_share";
-	}
+    if( $type eq 'dist' and @_ ) {
+        confess "Too many parameters to install_share";
+    }
 
-	my $def = _mk_def($type);
-	_add_module( $def, $_[0] );
+    my $def = _mk_def( $type );
+    _add_module( $def, $_[0] );
 
-	_add_dir( $def, $dir );
+    _add_dir( $def, $dir );
 }
+
 
 #####################################################################
-sub delete_share {
-	my $dir  = @_ ? pop   : '';
-	my $type = @_ ? shift : 'dist';
-	unless ( defined $type
-		and ( $type =~ /^(module|dist)$/ ) )
-	{
-		confess "Illegal or invalid share dir type '$type'";
-	}
+sub delete_share
+{
+    my $dir  = @_ ? pop : '';
+    my $type = @_ ? shift : 'dist';
+    unless ( defined $type and 
+            ( $type =~ /^(module|dist)$/ ) ) {
+        confess "Illegal or invalid share dir type '$type'";
+    }
 
-	if ( $type eq 'dist' and @_ ) {
-		confess "Too many parameters to delete_share";
-	}
+    if( $type eq 'dist' and @_ ) {
+        confess "Too many parameters to delete_share";
+    }
 
-	my $def = _mk_def("delete-$type");
-	_add_module( $def, $_[0] );
-	_add_dir( $def, $dir );
-}
+    my $def = _mk_def( "delete-$type" );
+    _add_module( $def, $_[0] );
+    _add_dir( $def, $dir );
+}   
+
+
 
 #
 # Build a task definition
-sub _mk_def {
-	my ($type) = @_;
-	return {
-		type     => $type,
-		dotfiles => $INCLUDE_DOTFILES,
-		dotdirs  => $INCLUDE_DOTDIRS
-	};
+sub _mk_def
+{
+    my( $type ) = @_;
+    return { type=>$type, 
+             dotfiles => $INCLUDE_DOTFILES, 
+             dotdirs => $INCLUDE_DOTDIRS
+           };
 }
 
 #
 # Add the module to a task definition
-sub _add_module {
-	my ( $def, $class ) = @_;
-	if ( $def->{type} =~ /module$/ ) {
-		my $module = _CLASS($class);
-		unless ( defined $module ) {
-			confess "Missing or invalid module name '$_[0]'";
-		}
-		$def->{module} = $module;
-	}
+sub _add_module
+{
+    my( $def, $class ) =  @_;
+    if( $def->{type} =~ /module$/ ) {
+        my $module = _CLASS( $class );
+        unless ( defined $module ) {
+            confess "Missing or invalid module name '$_[0]'";
+        }
+        $def->{module} = $module;
+    }
 }
 
 #
 # Add directories to a task definition
 # Save the definition
-sub _add_dir {
-	my ( $def, $dir ) = @_;
+sub _add_dir
+{
+    my( $def, $dir ) = @_;
 
-	$dir = [$dir] unless ref $dir;
+    $dir = [ $dir ] unless ref $dir;
 
-	my $del = 0;
-	$del = 1 if $def->{type} =~ /^delete-/;
+    my $del = 0;
+    $del = 1 if $def->{type} =~ /^delete-/;
 
-	foreach my $d (@$dir) {
-		unless ( $del or ( defined $d and -d $d ) ) {
-			confess "Illegal or missing directory '$d'";
-		}
-		if ( not $del and $ALREADY{$d}++ ) {
-			confess "Directory '$d' is already being installed";
-		}
-		push @DIRS, {%$def};
-		$DIRS[-1]{dir} = $d;
-	}
-}
+    foreach my $d ( @$dir ) {
+        unless ( $del or (defined $d and -d $d) ) {
+            confess "Illegal or missing directory '$d'";
+        }
+        if( not $del and $ALREADY{ $d }++ ) {
+            confess "Directory '$d' is already being installed";
+        }
+        push @DIRS, { %$def };
+        $DIRS[-1]{dir} = $d;
+    }
+}   
+
 
 #####################################################################
 # Build the postamble section
-sub postamble {
-	my $self = shift;
+sub postamble 
+{
+    my $self = shift;
 
-	my @ret;    # = $self->SUPER::postamble( @_ );
-	foreach my $def (@DIRS) {
-		push @ret, __postamble_share_dir( $self, $def );
-	}
-	return join "\n", @ret;
+    my @ret; # = $self->SUPER::postamble( @_ );
+    foreach my $def ( @DIRS ) {
+        push @ret, __postamble_share_dir( $self, $def );
+    }
+    return join "\n", @ret;
 }
 
 #####################################################################
-sub __postamble_share_dir {
-	my ( $self, $def ) = @_;
+sub __postamble_share_dir
+{
+    my( $self, $def ) = @_;
 
-	my $dir = $def->{dir};
+    my $dir = $def->{dir};
 
-	my ($idir);
+    my( $idir );
 
-	if ( $def->{type} eq 'delete-dist' ) {
-		$idir = File::Spec->catdir( _dist_dir(), $dir );
-	}
-	elsif ( $def->{type} eq 'delete-module' ) {
-		$idir = File::Spec->catdir( _module_dir($def), $dir );
-	}
-	elsif ( $def->{type} eq 'dist' ) {
-		$idir = _dist_dir();
-	}
-	else {    # delete-share and share
-		$idir = _module_dir($def);
-	}
+    if( $def->{type} eq 'delete-dist' ) {
+        $idir = File::Spec->catdir( _dist_dir(), $dir );
+    } 
+    elsif( $def->{type} eq 'delete-module' ) {
+        $idir = File::Spec->catdir( _module_dir( $def ), $dir );
+    }
+    elsif ( $def->{type} eq 'dist' ) {    
+        $idir = _dist_dir();
+    } 
+    else {                                  # delete-share and share
+        $idir = _module_dir( $def );
+    }
 
-	my @cmds;
-	if ( $def->{type} =~ /^delete-/ ) {
-		@cmds = "\$(RM_RF) $idir";
-	}
-	else {
-		my $autodir = '$(INST_LIB)';
-		my $pm_to_blib = $self->oneliner( <<CODE, ['-MExtUtils::Install'] );
+    my @cmds;
+    if( $def->{type} =~ /^delete-/ ) {
+        @cmds = "\$(RM_RF) $idir";
+    }
+    else {
+        my $autodir = '$(INST_LIB)';
+        my $pm_to_blib = $self->oneliner(<<CODE, ['-MExtUtils::Install']);
 pm_to_blib({\@ARGV}, '$autodir')
 CODE
 
-		my $files = {};
-		_scan_share_dir( $files, $idir, $dir, $def );
-		@cmds = $self->split_command( $pm_to_blib, %$files );
-	}
+        my $files = {};
+        _scan_share_dir( $files, $idir, $dir, $def );
+        @cmds = $self->split_command( $pm_to_blib, %$files );
+    }
 
-	my $r = join '', map { "\t\$(NOECHO) $_\n" } @cmds;
+    my $r = join '', map { "\t\$(NOECHO) $_\n" } @cmds;
 
-	#    use Data::Dumper;
-	#    die Dumper $files;
-	# Set up the install
-	return "config::\n$r";
+#    use Data::Dumper;
+#    die Dumper $files;
+    # Set up the install
+    return "config::\n$r";
 }
 
 # Get the per-dist install directory.
 # We depend on the Makefile for most of the info
-sub _dist_dir {
-	return File::Spec->catdir( '$(INST_LIB)', qw( auto share dist ), '$(DISTNAME)' );
+sub _dist_dir
+{
+    return File::Spec->catdir( '$(INST_LIB)', 
+                                    qw( auto share dist ), 
+                                    '$(DISTNAME)'
+                                  );
 }
 
 # Get the per-module install directory
 # We depend on the Makefile for most of the info
-sub _module_dir {
-	my ($def) = @_;
-	my $module = $def->{module};
-	$module =~ s/::/-/g;
-	return File::Spec->catdir( '$(INST_LIB)', qw( auto share module ), $module );
+sub _module_dir
+{
+    my( $def ) = @_;
+    my $module = $def->{module};
+    $module =~ s/::/-/g;
+    return  File::Spec->catdir( '$(INST_LIB)', 
+                                    qw( auto share module ), 
+                                    $module
+                                  );
 }
 
-sub _scan_share_dir {
-	my ( $files, $idir, $dir, $def ) = @_;
-	my $dh = IO::Dir->new($dir) or die "Unable to read $dir: $!";
-	my $entry;
-	while ( defined( $entry = $dh->read ) ) {
-		next if $entry =~ /(~|,v|#)$/;
-		my $full = File::Spec->catfile( $dir, $entry );
-		if ( -f $full ) {
-			next if not $def->{dotfiles} and $entry =~ /^\./;
-			$files->{$full} = File::Spec->catfile( $idir, $entry );
-		}
-		elsif ( -d $full ) {
-			if ( $def->{dotdirs} ) {
-				next
-					if $entry eq '.'
-					or $entry eq '..'
-					or $entry =~ /^\.(svn|git|cvs)$/;
-			}
-			else {
-				next if $entry =~ /^\./;
-			}
-			_scan_share_dir( $files, File::Spec->catdir( $idir, $entry ), $full, $def );
-		}
-	}
+sub _scan_share_dir
+{
+    my( $files, $idir, $dir, $def ) = @_;
+    my $dh = IO::Dir->new( $dir ) or die "Unable to read $dir: $!";
+    my $entry;
+    while( defined( $entry = $dh->read ) ) {
+        next if $entry =~ /(~|,v|#)$/;
+        my $full = File::Spec->catfile( $dir, $entry );
+        if( -f $full ) {
+            next if not $def->{dotfiles} and $entry =~ /^\./;
+            $files->{ $full } = File::Spec->catfile( $idir, $entry );
+        }
+        elsif( -d $full ) {
+            if( $def->{dotdirs} ) {
+                next if $entry eq '.' or $entry eq '..' or 
+                        $entry =~ /^\.(svn|git|cvs)$/;
+            }
+            else {
+                next if $entry =~ /^\./;
+            }
+            _scan_share_dir( $files, File::Spec->catdir( $idir, $entry ), $full, $def );
+        }
+    }
 }
+
 
 #####################################################################
 # Cloned from Params::Util::_CLASS
 sub _CLASS ($) {
-	( defined $_[0] and !ref $_[0] and $_[0] =~ m/^[^\W\d]\w*(?:::\w+)*$/s )
-		? $_[0]
-		: undef;
+    (
+        defined $_[0]
+        and
+        ! ref $_[0]
+        and
+        $_[0] =~ m/^[^\W\d]\w*(?:::\w+)*$/s
+    ) ? $_[0] : undef;
 }
 
 1;

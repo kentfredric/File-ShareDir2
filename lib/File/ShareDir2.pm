@@ -1,5 +1,5 @@
 package File::ShareDir2;
-
+# vim: noet ts=2 sw=2
 # ABSTRACT: Locate per-dist and per-module shared files
 
 #pod =head1 SYNOPSIS
@@ -105,9 +105,11 @@ use 5.006;    # our
 use strict;
 use warnings;
 
-use Carp     ();
-use Config   ();
-use Exporter ();
+use Carp             ();
+use Config           ();
+use Exporter         ();
+use File::Spec       ();
+use Class::Inspector ();
 
 our $VERSION = '0.001000';
 our @ISA       = 'Exporter';
@@ -285,21 +287,24 @@ sub class_file {
 	# Rather than using Class::ISA, we'll use an inlined version
 	# that implements the same basic algorithm.
 	my @path  = ();
-	my @queue = ($module);
+	my @queue = ( $module );
 	my %seen  = ( $module => 1 );
 	while ( my $cl = shift @queue ) {
 		push @path, $cl;
 		no strict 'refs';
-		unshift @queue, grep { !$seen{$_}++ }
-			map { s/^::/main::/; s/\'/::/g; $_ } ( @{"${cl}::ISA"} );
+		unshift @queue, grep { ! $seen{$_}++ }
+			map { s/^::/main::/; s/\'/::/g; $_ }
+			( @{"${cl}::ISA"} );
 	}
 
 	# Search up the path
-	foreach my $class (@path) {
+	foreach my $class ( @path ) {
 		local $@;
-		my $dir = eval { module_dir($class); };
+		my $dir = eval {
+		 	module_dir($class);
+		};
 		next if $@;
-		my $path = File::Spec->catfile( $dir, $file );
+		my $path = File::Spec->catfile($dir, $file);
 		unless ( -e $path ) {
 			next;
 		}
@@ -317,15 +322,17 @@ sub class_file {
 sub _dist_packfile {
 	my $module = shift;
 	my @dirs   = grep { -e } ( $Config::Config{archlibexp}, $Config::Config{sitearchexp} );
-	my $file   = File::Spec->catfile( 'auto', split( /::/, $module ), '.packlist', );
+	my $file   = File::Spec->catfile(
+		'auto', split( /::/, $module), '.packlist',
+	);
 
-	foreach my $dir (@dirs) {
+	foreach my $dir ( @dirs ) {
 		my $path = File::Spec->catfile( $dir, $file );
 		next unless -f $path;
 
 		# Load the file
 		my $packlist = ExtUtils::Packlist->new($path);
-		unless ($packlist) {
+		unless ( $packlist ) {
 			die "Failed to load .packlist file for $module";
 		}
 
@@ -337,18 +344,19 @@ sub _dist_packfile {
 
 # Inlined from Params::Util pure perl version
 sub _CLASS {
-	( defined $_[0] and !ref $_[0] and $_[0] =~ m/^[^\W\d]\w*(?:::\w+)*\z/s ) ? $_[0] : undef;
+    (defined $_[0] and ! ref $_[0] and $_[0] =~ m/^[^\W\d]\w*(?:::\w+)*\z/s) ? $_[0] : undef;
 }
+
 
 # Maintainer note: The following private functions are used by
 #                  File::ShareDir::PAR. (It has to or else it would have to copy&fork)
 #                  So if you significantly change or even remove them, please
-#                  notify the File::ShareDir::PAR maintainer(s). Thank you!
+#                  notify the File::ShareDir::PAR maintainer(s). Thank you!    
 
 # Matches a valid distribution name
 ### This is a total guess at this point
 sub _DIST {
-	if ( defined $_[0] and !ref $_[0] and $_[0] =~ /^[a-z0-9+_-]+$/is ) {
+	if ( defined $_[0] and ! ref $_[0] and $_[0] =~ /^[a-z0-9+_-]+$/is ) {
 		return shift;
 	}
 	Carp::croak("Not a valid distribution name");
@@ -366,7 +374,7 @@ sub _MODULE {
 # A valid file name
 sub _FILE {
 	my $file = shift;
-	unless ( defined $file and !ref $file and length $file ) {
+	unless ( defined $file and ! ref $file and length $file ) {
 		Carp::croak("Did not pass a file name");
 	}
 	if ( File::Spec->file_name_is_absolute($file) ) {
