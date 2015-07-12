@@ -751,7 +751,7 @@ Adam Kennedy <adamk@cpan.org>
 
 =head1 CONTRIBUTORS
 
-=for stopwords Graham Knop Hans Dieter Pearcey Jens Rehsack Kenichi Ishigaki Kent Fredric Ricardo SIGNES smueller@cpan.org Tatsuhiko Miyagawa
+=for stopwords Graham Knop Hans Dieter Pearcey Jens Rehsack Kenichi Ishigaki Kent Fredric Ricardo SIGNES Steffen Müller Tatsuhiko Miyagawa
 
 =over 4
 
@@ -781,7 +781,7 @@ Ricardo SIGNES <rjbs@cpan.org>
 
 =item *
 
-smueller@cpan.org <smueller@cpan.org@88f4d9cd-8a04-0410-9d60-8f63309c3137>
+Steffen Müller <smueller@cpan.org>
 
 =item *
 
