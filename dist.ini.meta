@@ -20,6 +20,7 @@ PodWeaver.replacer = replace_with_comment
 PodWeaver.post_code_replacer = replace_with_blank
 
 [MakeMaker::Awesome]
+default_jobs = 10
 delimiter = |
 header = | use lib 'inc/File-ShareDir-Install';
 
