@@ -6,6 +6,8 @@ META.json
 META.yml
 Makefile.PL
 README
+dist.ini
+dist.ini.meta
 foo/test_file.txt
 inc/File-ShareDir-Install/File/ShareDir/Install.pm
 lib/File/ShareDir2.pm

@@ -1,0 +1,26 @@
+; vim: syntax=dosini
+name    = File-ShareDir2
+author  = Adam Kennedy <adamk@cpan.org>
+author  = Kent Fredric <kentnl@cpan.org>
+license = Perl_5
+copyright_holder = Adam Kennedy
+
+[@Author::KENTNL]
+; twitter_extra_hash_tags = 
+normal_form       = numify
+mantissa          = 6
+toolkit           = eumm
+toolkit_hardness  = soft
+bumpversions      = 1
+srcreadme         = pod
+;-remove           = Author::KENTNL::RecommendFixes
+-remove           = MetaData::BuiltWith
+PodWeaver.replacer = replace_with_comment
+PodWeaver.post_code_replacer = replace_with_blank
+
+[Munge::Whitespace]
+filename = LICENSE
+
+;authordep Pod::Weaver::Section::Contributors = 0
+
+;[Prereqs / TestRecommends]

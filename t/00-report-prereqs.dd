@@ -15,6 +15,7 @@ do { my $x = {
                       'requires' => {
                                       'Dist::Zilla' => '5',
                                       'Dist::Zilla::Plugin::Author::KENTNL::CONTRIBUTING' => '0.001003',
+                                      'Dist::Zilla::Plugin::Author::KENTNL::RecommendFixes' => '0.004002',
                                       'Dist::Zilla::Plugin::Author::KENTNL::TravisCI' => '0.001002',
                                       'Dist::Zilla::Plugin::Authority' => '1.006',
                                       'Dist::Zilla::Plugin::AutoPrereqs' => '0',
