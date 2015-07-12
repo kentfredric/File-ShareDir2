@@ -825,7 +825,7 @@ smueller@cpan.org <smueller@cpan.org@88f4d9cd-8a04-0410-9d60-8f63309c3137>
 
 =head1 COPYRIGHT AND LICENSE
 
-This software is copyright (c) 2015 by Adam Kennedy <adamk@cpan.org>.
+This software is copyright (c) 2011 by Adam Kennedy <adamk@cpan.org>.
 
 This is free software; you can redistribute it and/or modify it under
 the same terms as the Perl 5 programming language system itself.
