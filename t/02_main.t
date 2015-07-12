@@ -9,7 +9,7 @@ BEGIN {
 }
 
 use Test::More tests => 30;
-use File::ShareDir;
+use File::ShareDir2;
 
 sub dies {
 	my $code    = shift;
@@ -37,7 +37,7 @@ ok( ! defined &module_dir,  'module_dir not imported by default'  );
 ok( ! defined &dist_file,   'dist_file not imported by default'   );
 ok( ! defined &module_file, 'module_file not imported by default' );
 ok( ! defined &class_file,  'class_file not imported by default'  );
-use_ok( 'File::ShareDir', ':ALL' );
+use_ok( 'File::ShareDir2', ':ALL' );
 
 # Import as needed
 ok( defined &dist_dir,    'dist_dir imported'    );
@@ -48,7 +48,7 @@ ok( defined &class_file,  'class_file imported'  );
 
 # Allow all named functions
 use_ok(
-	'File::ShareDir',
+	'File::ShareDir2',
 	'module_dir',
 	'module_file',
 	'dist_dir',
@@ -64,11 +64,11 @@ use_ok(
 # Support Methods
 
 is(
-	File::ShareDir::_MODULE('File::ShareDir'), 'File::ShareDir',
+	File::ShareDir2::_MODULE('File::ShareDir2'), 'File::ShareDir2',
 	'_MODULE returns correct for known loaded module',
 );
 is(
-	File::ShareDir::_DIST('File-ShareDir'), 'File-ShareDir',
+	File::ShareDir2::_DIST('File-ShareDir2'), 'File-ShareDir2',
 	'_DIST returns correct for known good dist',
 );
 
@@ -79,7 +79,7 @@ is(
 #####################################################################
 # Module Tests
 
-my $module_dir = module_dir('File::ShareDir');
+my $module_dir = module_dir('File::ShareDir2');
 ok( $module_dir, 'Can find our own module dir' );
 ok( -d $module_dir, '... and is a dir' );
 ok( -r $module_dir, '... and have read permissions' );
@@ -91,7 +91,7 @@ dies(
 	'Getting module dir for known non-existanct module dies',
 );
 
-my $module_file = module_file('File::ShareDir', 'test_file.txt');
+my $module_file = module_file('File::ShareDir2', 'test_file.txt');
 ok( -f $module_file, 'module_file ok' );
 
 
@@ -101,12 +101,12 @@ ok( -f $module_file, 'module_file ok' );
 #####################################################################
 # Distribution Tests
 
-my $dist_dir = dist_dir('File-ShareDir');
+my $dist_dir = dist_dir('File-ShareDir2');
 ok( $dist_dir, 'Can find our own dist dir' );
 ok( -d $dist_dir, '... and is a dir' );
 ok( -r $dist_dir, '... and have read permissions' );
 
-my $dist_file = dist_file('File-ShareDir', 'sample.txt');
+my $dist_file = dist_file('File-ShareDir2', 'sample.txt');
 ok( $dist_file, 'Can find our sample module file' );
 ok( -f $dist_file, '... and is a file' );
 ok( -r $dist_file, '... and have read permissions' );
@@ -125,7 +125,7 @@ is(
 #####################################################################
 # Class Tests
 
-use t::lib::ShareDir;
-my $class_file = class_file('t::lib::ShareDir', 'test_file.txt');
+use t::lib::ShareDir2;
+my $class_file = class_file('t::lib::ShareDir2', 'test_file.txt');
 ok( -f $class_file, 'class_file ok' );
 is( $class_file, $module_file, 'class_file matches module_file for subclass' );

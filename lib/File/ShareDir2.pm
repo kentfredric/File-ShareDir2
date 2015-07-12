@@ -1,31 +1,31 @@
-package File::ShareDir;
+package File::ShareDir2;
 
 =pod
 
 =head1 NAME
 
-File::ShareDir - Locate per-dist and per-module shared files
+File::ShareDir2 - Locate per-dist and per-module shared files
 
 =head1 SYNOPSIS
 
-  use File::ShareDir ':ALL';
+  use File::ShareDir2 ':ALL';
   
   # Where are distribution-level shared data files kept
-  $dir = dist_dir('File-ShareDir');
+  $dir = dist_dir('File-ShareDir2');
   
   # Where are module-level shared data files kept
-  $dir = module_dir('File::ShareDir');
+  $dir = module_dir('File::ShareDir2');
   
   # Find a specific file in our dist/module shared dir
-  $file = dist_file(  'File-ShareDir',  'file/name.txt');
-  $file = module_file('File::ShareDir', 'file/name.txt');
+  $file = dist_file(  'File-ShareDir2',  'file/name.txt');
+  $file = module_file('File::ShareDir2', 'file/name.txt');
   
   # Like module_file, but search up the inheritance tree
   $file = class_file( 'Foo::Bar', 'file/name.txt' );
 
 =head1 DESCRIPTION
 
-The intent of L<File::ShareDir> is to provide a companion to
+The intent of L<File::ShareDir2> is to provide a companion to
 L<Class::Inspector> and L<File::HomeDir>, modules that take a
 process that is well-known by advanced Perl developers but gets a
 little tricky, and make it more available to the larger Perl community.
@@ -69,10 +69,10 @@ store any sort of data.
 
 =head2 Using Data in your Module
 
-C<File::ShareDir> forms one half of a two part solution.
+C<File::ShareDir2> forms one half of a two part solution.
 
 Once the files have been installed to the correct directory,
-you can use C<File::ShareDir> to find your files again after
+you can use C<File::ShareDir2> to find your files again after
 the installation.
 
 For the installation half of the solution, see L<Module::Install>
@@ -80,7 +80,7 @@ and its C<install_share> directive.
 
 =head1 FUNCTIONS
 
-C<File::ShareDir> provides four functions for locating files and
+C<File::ShareDir2> provides four functions for locating files and
 directories.
 
 For greater maintainability, none of these are exported by default
@@ -88,15 +88,15 @@ and you are expected to name the ones you want at use-time, or provide
 the C<':ALL'> tag. All of the following are equivalent.
 
   # Load but don't import, and then call directly
-  use File::ShareDir;
-  $dir = File::ShareDir::dist_dir('My-Dist');
+  use File::ShareDir2;
+  $dir = File::ShareDir2::dist_dir('My-Dist');
   
   # Import a single function
-  use File::ShareDir 'dist_dir';
+  use File::ShareDir2 'dist_dir';
   dist_dir('My-Dist');
   
   # Import all the functions
-  use File::ShareDir ':ALL';
+  use File::ShareDir2 ':ALL';
   dist_dir('My-Dist');
 
 All of the functions will check for you that the dir/file actually
@@ -117,7 +117,7 @@ use Class::Inspector ();
 
 use vars qw{ $VERSION @ISA @EXPORT_OK %EXPORT_TAGS };
 BEGIN {
-	$VERSION     = '1.103';
+	$VERSION     = '0.001000';
 	@ISA         = qw{ Exporter };
 	@EXPORT_OK   = qw{
 		dist_dir
@@ -546,14 +546,6 @@ sub _FILE {
 1;
 
 =pod
-
-=head1 SUPPORT
-
-Bugs should always be submitted via the CPAN bug tracker
-
-L<http://rt.cpan.org/NoAuth/ReportBug.html?Queue=File-ShareDir>
-
-For other issues, contact the maintainer.
 
 =head1 AUTHOR
 

@@ -15,7 +15,7 @@ use File::ShareDir::Install 0.03;
 install_share 'share';
 
 # Full version
-install_share module => 'File::ShareDir' => 'foo';
+install_share module => 'File::ShareDir2' => 'foo';
 
 my %RUN_DEPS = (
     'warnings'         => 0,
@@ -37,15 +37,15 @@ WriteMakefile1(
     META_ADD         => {
         'meta-spec' => { version => 2 },
         resources   => {
-            homepage   => 'https://metacpan.org/release/File-ShareDir',
+            homepage   => 'https://metacpan.org/release/File-ShareDir2',
             repository => {
-                url  => 'git@github.com:perl5-utils/File-ShareDir.git',
-                web  => 'https://github.com/perl5-utils/File-ShareDir',
+                url  => 'git@github.com:perl5-utils/File-ShareDir2.git',
+                web  => 'https://github.com/perl5-utils/File-ShareDir2',
                 type => 'git',
             },
             bugtracker => {
-                web    => 'http://rt.cpan.org/Public/Dist/Display.html?Name=File-ShareDir',
-                mailto => 'file-sharedir@rt.cpan.org',
+                web    => 'http://rt.cpan.org/Public/Dist/Display.html?Name=File-ShareDir2',
+                mailto => 'file-sharedir2@rt.cpan.org',
             },
         },
         prereqs => {
@@ -69,9 +69,9 @@ WriteMakefile1(
             },
         },
     },
-    NAME           => 'File::ShareDir',
-    VERSION_FROM   => 'lib/File/ShareDir.pm',
-    ABSTRACT_FROM  => 'lib/File/ShareDir.pm',
+    NAME           => 'File::ShareDir2',
+    VERSION_FROM   => 'lib/File/ShareDir2.pm',
+    ABSTRACT_FROM  => 'lib/File/ShareDir2.pm',
     LICENSE        => 'perl',
     AUTHOR         => q{Adam Kennedy <adamk@cpan.org>},
     PREREQ_PM      => \%RUN_DEPS,
