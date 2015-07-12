@@ -202,7 +202,7 @@ sub module_dir {
 	for my $resolver (@RESOLVERS) {
 		my $dir = $resolver->module_dir($module);
 		if ( defined $dir ) {
-			log_trace { "module_dir:found $module in $resolver: $result" };
+			log_trace { "module_dir:found $module in $resolver: $dir" };
 			return $dir;
 		}
 		log_trace { "module_dir:$module not in $resolver" };
