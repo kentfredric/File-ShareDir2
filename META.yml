@@ -28,7 +28,7 @@ provides:
   File::ShareDir2::Resolver::Perl:
     file: lib/File/ShareDir2/Resolver/Perl.pm
     version: '0.001000'
-  File::ShareDir::Resolver::Perl::Legacy:
+  File::ShareDir2::Resolver::Perl::Legacy:
     file: lib/File/ShareDir2/Resolver/Perl/Legacy.pm
     version: '0.001000'
 requires:

@@ -2,7 +2,7 @@ use 5.006;    # our
 use strict;
 use warnings;
 
-package File::ShareDir::Resolver::Perl::Legacy;
+package File::ShareDir2::Resolver::Perl::Legacy;
 
 # ABSTRACT: The Pre-1.0 resolver mechanic
 
@@ -85,7 +85,7 @@ __END__
 
 =head1 NAME
 
-File::ShareDir::Resolver::Perl::Legacy - The Pre-1.0 resolver mechanic
+File::ShareDir2::Resolver::Perl::Legacy - The Pre-1.0 resolver mechanic
 
 =head1 VERSION
 
