@@ -118,7 +118,6 @@ our @EXPORT_OK = qw{
 	dist_file
 	module_dir
 	module_file
-	class_dir
 	class_file
 };
 our %EXPORT_TAGS = ( ALL => [@EXPORT_OK], );
